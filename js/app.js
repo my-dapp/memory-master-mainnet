@@ -79,8 +79,8 @@ function match() {
                     opens[i].classList.remove('flipOutX','open','show');
                 }
             }
-            var timer1 = setTimeout(task1, 1000);
-            var timer2 = setTimeout(task2, 1000);
+            var timer1 = setTimeout(task1, 500);
+            var timer2 = setTimeout(task2, 500);
             timer1=null;
             timer2=null;
         }
@@ -125,7 +125,7 @@ function end() {
 /*
             '            <div><span>Stars：</span><span>' + stars + '</span></div>\n' +
 */
-            '            <div><span>用时：</span><span>' + time + '</span></div>\n' +
+            '            <div><span>用时：</span><span class="result-time">' + time + '</span></div>\n' +
             '            <a href="../index.html"></a>\n' +
             '        </div>\n' +
             '        <input type="text" class="nickname" placeholder="输入昵称">\n' +
@@ -141,9 +141,10 @@ function end() {
 
         $(".rank").click(function () {
             var name = document.querySelector('.nickname').value;
-            var timeArray = time.split(":");
-            time = parseInt(timeArray[0]) * 60 + parseInt(timeArray[1]);
-            save(name, time);
+            var resultTime = time || document.querySelector('.result-time').value;
+            var timeArray = resultTime.split(":");
+            var timeSecond = parseInt(timeArray[0]) * 60 + parseInt(timeArray[1]);
+            save(name, timeSecond);
         });
     }
 }

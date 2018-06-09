@@ -64,8 +64,15 @@ function funcIntervalQuery() {
 
 
 function saveResult(res) {
-    console.log("return of rpc call resp: " + JSON.stringify(res));
+    var resStr = JSON.stringify(res);
+    console.log("return of rpc call resp: " + resStr);
     if (res) {
+        // 取消交易
+        if (resStr.search(/Transaction rejected by user/i) > 0) {
+            $(".layer").fadeOut(400);
+            clearInterval(intervalQuery);
+            return;
+        }
         var txhash = res.txhash;
         if(txhash) {
             testTransitionStatus(txhash, function () {
