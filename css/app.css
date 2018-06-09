@@ -347,3 +347,12 @@ td:last-child{
     margin-right: auto;
 }
 
+.footer-power-by{
+    width: 150px;
+    margin: 0 auto;
+}
+.footer-power-by a {
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+}
