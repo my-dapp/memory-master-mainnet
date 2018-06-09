@@ -79,8 +79,8 @@ function match() {
                     opens[i].classList.remove('flipOutX','open','show');
                 }
             }
-            var timer1 = setTimeout(task1, 500);
-            var timer2 = setTimeout(task2, 500);
+            var timer1 = setTimeout(task1, 700);
+            var timer2 = setTimeout(task2, 700);
             timer1=null;
             timer2=null;
         }
