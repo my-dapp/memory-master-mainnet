@@ -1,4 +1,4 @@
-var dappAddress = "n1pwzcrZZeFjTeHE2DhnpJe4wHtPvRq9zKP"; // mainnet
+var dappAddress = "n1tq7UDMw19CUQcUA7w4XFvVKoPK4bJbr3e"; // mainnet
 
 var nebulas = require("nebulas"),
     Account = nebulas.Account,

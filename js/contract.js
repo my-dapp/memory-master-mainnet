@@ -1,1 +1,166 @@
-"use strict";var MemoryMasterContract=function(){LocalContractStorage.defineMapProperty(this,"each",{parse:function(a){return new Player(a)},stringify:function(a){return a.toString()}})};MemoryMasterContract.prototype={init:function(){},save:function(c,e){c=c.trim();e=e.trim();if(!c||!e){throw new Error("call contract exception")}var g=Blockchain.transaction.from;console.log("from : "+g);var d=this.each.get(g);console.log("player : "+d);if(d){var f=d.time;if(parseInt(f)>parseInt(e)){d.time=e;d.name=c}}else{d=new Player();d.name=c;d.address=g;d.time=e}this.each.put(g,d.toString());var b=LocalContractStorage.get("rank")||new Array();var a=new Rank(b).add(d);LocalContractStorage.set("rank",b);return a},getRank:function(){return LocalContractStorage.get("rank")}};var Player=function(a){if(a){var b=JSON.parse(a);this.name=b.name;this.address=b.address;this.time=b.time}};Player.prototype={toString:function(){return JSON.stringify(this)}};var Rank=function(a){this.MAX_NUM=10;this.rankList=a};Rank.prototype={add:function(b){var a=this._getMyHistoryDataIndexInRank(b.address);if(a!==undefined){var c=this.rankList[a].time;if(parseInt(c)>parseInt(b.time)){this.rankList[a].time=b.time;this.rankList[a].name=b.name;this._resort();return true}else{return false}}else{this.rankList.push(b);this._resort();if(this.rankList.length>this.MAX_NUM){this.rankList.length=this.MAX_NUM;return b.time>=this.rankList[this.MAX_NUM-1].time?false:true}}},_resort:function(){this.rankList.sort(function(b,a){if(parseInt(b.time)<parseInt(a.time)){return -1}else{if(parseInt(b.time)>parseInt(a.time)){return 1}else{return 0}}})},_getMyHistoryDataIndexInRank:function(b){for(var a=0;a<this.rankList.length;a++){if(this.rankList[a].address===b){return a}}return undefined}};module.exports=MemoryMasterContract;
+"use strict";
+
+/**
+ * 合约
+ * @constructor
+ */
+var MemoryMasterContract = function() {
+
+    LocalContractStorage.defineMapProperty(this, "each", {
+        parse: function(data) {
+            return new Player(data);
+        },
+        stringify: function(o) {
+            return o.toString();
+        }
+    });
+};
+
+MemoryMasterContract.prototype = {
+    init: function() {},
+
+    /**
+     * 上传玩家分数
+     * @param name
+     * @param time
+     */
+    save: function(name, time) {
+        name = name.trim();
+        time = time.trim();
+        if (!name || !time) {
+            throw new Error("call contract exception");
+        }
+
+        var from = Blockchain.transaction.from;
+        console.log("from : " + from);
+        var player = this.each.get(from);
+        console.log("player : " + player);
+        if (player) {
+            var oldTime = player.time;
+            if (parseInt(oldTime) > parseInt(time)) {
+                player.time = time;
+                player.name = name;
+            }
+        } else {
+            player = new Player();
+            player.name = name;
+            player.address = from;
+            player.time = time
+        }
+        this.each.put(from, player.toString());
+
+        // 获取排行榜
+        var rankList = LocalContractStorage.get("rank") || new Array();
+
+        // 打榜
+        var ranked = new Rank(rankList).add(player);
+
+        LocalContractStorage.set("rank", rankList);
+
+        return ranked;
+    },
+
+    /**
+     * 获取榜单
+     */
+    getRank: function() {
+        return LocalContractStorage.get("rank");
+    }
+};
+
+
+/**
+ * 玩家对象
+ * @param data
+ * @constructor
+ */
+var Player = function(data) {
+    if (data) {
+        var obj = JSON.parse(data);
+        this.name = obj.name;
+        this.address = obj.address;
+        this.time = obj.time;
+    }
+};
+
+Player.prototype = {
+    toString: function() {
+        return JSON.stringify(this);
+    }
+};
+
+/**
+ * 榜单对象
+ * @param rankList
+ * @constructor
+ */
+var Rank = function (rankList) {
+    this.MAX_NUM = 10;
+    this.rankList = rankList;
+};
+
+Rank.prototype = {
+
+    /**
+     * 新增
+     * @return true 表示本次打榜成功
+     * false 表示本次打榜失败
+     */
+    add: function (player) {
+        var index = this._getMyHistoryDataIndexInRank(player.address);
+        if (index !== undefined) {
+            // 已入榜
+            var oldTime = this.rankList[index].time;
+            if (parseInt(oldTime) > parseInt(player.time)) {
+                // 更新分数
+                this.rankList[index].time = player.time;
+                this.rankList[index].name = player.name;
+
+                // 榜单重排
+                this._resort();
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            this.rankList.push(player);
+            this._resort(); // 榜单重排
+            if (this.rankList.length > this.MAX_NUM) {
+                this.rankList.length = this.MAX_NUM;
+                return player.time >= this.rankList[this.MAX_NUM -1].time ? false : true;
+            }
+        }
+    },
+
+    /**
+     * 榜单重排序
+     * @private
+     */
+    _resort: function () {
+        //榜单重排
+        this.rankList.sort(function(o1, o2) {
+            if (parseInt(o1.time) < parseInt(o2.time)) {
+                return -1;
+            } else if (parseInt(o1.time) > parseInt(o2.time)) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+    },
+
+    /**
+     * 是否已入榜
+     * @private
+     */
+    _getMyHistoryDataIndexInRank: function (from) {
+        for (var i = 0; i < this.rankList.length; i++) {
+            if (this.rankList[i].address === from) {
+                return i;
+            }
+        }
+        return undefined;
+    }
+};
+
+module.exports = MemoryMasterContract;
