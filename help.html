@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Matching Game Help</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/googlefonts.css">
+    <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="//unpkg.com/element-ui@2.4.1/lib/theme-chalk/index.css">
+    <script src="//unpkg.com/vue/dist/vue.js"></script>
+    <script src="//unpkg.com/element-ui@2.4.1/lib/index.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="help-container">
+            <header>
+                <h3>帮助中心</h3>
+            </header>
+            <section class="help-content">
+                <div class="content">
+                    <el-collapse v-model="activeName" accordion>
+                        <el-collapse-item title="游戏说明" name="1">
+                            <div>《记忆大师》游戏得分需要提交到星云链上，才能参与打榜，查看排名哦。</div>
+                            <div>游戏玩法：</div>
+                            <div>1. 点击翻转小卡片，如果连续两次翻转的小卡片图案一致，表示匹配成功，图片保持显式状态。否则，匹配失败，同时图片翻转回未显示状态。</div>
+                            <div>2. 游戏以完成所需时间为得分标准，用时少者优胜。</div>
+                            <div>3. 游戏结束后，可提及分数到星云链上，参与排名打榜。</div>
+                        </el-collapse-item>
+                        <el-collapse-item title="安装电脑端 Chrome 星云钱包插件" name="2">
+                            <div>下载 <a style="display: inline" href="https://github.com/ChengOrangeJu/WebExtensionWallet">WebExtensionWallet</a> zip 压缩包，解压。</div>
+                            <div>在 Chrome 浏览器地址栏输入 chrome://extensions/ 进入到浏览器扩展程序管理页面。</div>
+                            <div>打开右上角开发者模式开关。</div>
+                            <div>点击【加载已解压到扩展程序】，然后选择解压好的文件夹，即可安装成功。</div>
+                        </el-collapse-item>
+                        <el-collapse-item title="安装手机端 App 版钱包（NAS Nano）" name="3">
+                            <div>安卓版下载地址：</div>
+                            <div><a href="https://nano.nebulas.io/index_cn.html">https://nano.nebulas.io/index_cn.html</a></div>
+                            <div>iOS版下载地址（请使用中国大陆以外市场下载）：</div>
+                            <div><a href="https://itunes.apple.com/hk/app/nas-nano/id1281191905?l=zh&ls=1&mt=8">https://itunes.apple.com/hk/app/nas-nano/id1281191905?l=zh&ls=1&mt=8</a></div>
+                            <div style="margin-top: 10px;">
+                                <el-tooltip placement="top">
+                                    <div slot="content">
+                                        <img class="help-qrcode" src="img/android-code.png">
+                                    </div>
+                                    <el-button>Android 下载</el-button>
+                                </el-tooltip>
+                                <i style="padding: 0 25px;"></i>
+                                <el-tooltip placement="top">
+                                    <div slot="content">
+                                        <img class="help-qrcode" src="img/ios-code.png">
+                                    </div>
+                                    <el-button>iOS 下载</el-button>
+                                </el-tooltip>
+                            </div>
+
+                        </el-collapse-item>
+                        <el-collapse-item title="怎样创建一个钱包" name="4">
+                            <div>请参见星云<a href="https://blog.nebulas.io/2018/04/12/creating-a-nas-wallet/">官方文档</a></div>
+                        </el-collapse-item>
+                    </el-collapse>
+                </div>
+            </section>
+    </div>
+    <div class="push"></div>
+</div>
+<div class="h-footer">
+    <p class="footer-power-by">Power by <a href="https://nebulas.io/">Nebulas.io</a></p>
+    <p class="footer"><span>记忆大师@2018</span><span> | </span><a href="mailto:mydapp@hotmail.com">联系作者</a></p>
+</div>
+<div class="layer"><i class="icon-spinner icon-spin"></i></div>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/nebulas.js"></script>
+<script src="js/neb.min.js"></script>
+<script src="js/nebPay.min.js"></script>
+<script src="js/share.js"></script>
+
+<style type="text/css">
+
+    html,body {
+        background: #ffffff;
+        height: 100%;
+    }
+
+    .wrapper{
+        min-height: 100%;
+        height: auto !important;
+        height: 100%;
+        margin: 0 auto -58px;
+    }
+
+    .push{
+        height: 58px;
+    }
+
+    .h-footer {
+        margin-top: 10px;
+        text-align: center;
+    }
+    .h-footer p {
+
+    }
+    .help-container {
+        font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+        margin: 0 auto;
+        max-width: 600px;
+        padding-top: 30px;
+    }
+    .help-container header {
+        font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .help-content {
+        margin: 0 4px;
+        border: 1px solid #ebebeb;
+        border-radius: 3px;
+        transition: .2s;
+    }
+    .help-content .content {
+        padding: 24px;
+    }
+
+    .help-qrcode {
+        position: static;
+        top: 0px;
+        left: 0px;
+    }
+
+</style>
+
+<script>
+
+    var HelpCollapse = {
+        data() {
+            return {
+                activeName: '1'
+            };
+        }
+    };
+    var Help = Vue.extend(HelpCollapse);
+    var myTips = new Help().$mount('.help-content');
+
+</script>
+</body>
+</html>
